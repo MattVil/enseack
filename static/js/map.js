@@ -34,45 +34,62 @@ function displayHeatmap(heatmap){
 }
 
 function refresh(){
-    let data, gradient;
+    let rawdata, data = [], gradient;
     let selectedValue = $('input[name="options"]:checked').val();
     let periode = $('#periode-selector option:selected').val();
     console.log(selectedValue);
-    getData();
+    rawdata = getData(selectedValue, periode);
+    gradient = getGradient(selectedValue);
 
-    switch(selectedValue){
-        case 'son':
-            data = getNoiseData();
-            gradient = getNoiseGradient();
-            break;
-        case 'temperature':
-            data = getTemperatureData();
-            gradient = getTemperatureGradient();
-            break;
-        case 'air':
-            data = getAirData();
-            gradient = getAirGradient();
-            break;
-        case 'humidity':
-            data = getHumidityData();
-            gradient = getHumidityGradient();
-            break;
-        case 'waste':
-            data = getWasteData();
-            gradient = getWasteGradient();
-            break;
+    if (selectedValue === "air"){
+
+    }else{
+        json = JSON.parse(rawdata);
+        console.log(json);
+        for (var line in json){
+            var dot = {};
+            dot['location'] = new google.maps.LatLng(line['lattitude'], line['longitude']);
+            dot['weight'] = line['value'];
+            data.push(dot);
+        }
     }
 
+    //data = getTemperatureData();
     heatmap.setData(data);
     heatmap.set('gradient', gradient);
     heatmap.setMap(map);
 }
 
-function getData(){
+function getData(capteur, periode){
+    let timestamp = new Date().getTime();
     let xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", "https://enseack-rest-sql.herokuapp.com/all", false);
+    xmlHttp.open( "GET", "http://127.0.0.1:5000/all", false);
     xmlHttp.send();
     console.log(xmlHttp.responseText);
+
+    return xmlHttp.responseText;
+}
+
+function getGradient(capteur){
+    let gradient;
+    switch(capteur){
+        case 'son':
+            gradient = getNoiseGradient();
+            break;
+        case 'temperature':
+            gradient = getTemperatureGradient();
+            break;
+        case 'air':
+            gradient = getAirGradient();
+            break;
+        case 'humidity':
+            gradient = getHumidityGradient();
+            break;
+        case 'waste':
+            gradient = getWasteGradient();
+            break;
+    }
+    return gradient;
 }
 
 //TODO: Recuperer données temperature
@@ -95,26 +112,6 @@ function getTemperatureData(){
     ];
 
     return heatmapData
-}
-
-//TODO: Recuperer données bruit
-function getNoiseData(){
-    return getTemperatureData();
-}
-
-//TODO: Recuperer données déchets
-function getWasteData(){
-    return getTemperatureData();
-}
-
-//TODO: Recuperer données humidité
-function getHumidityData(){
-    return getTemperatureData();
-}
-
-//TODO: Recuperer données air
-function getAirData(){
-    return getTemperatureData();
 }
 
 function getNoiseGradient(){
@@ -144,7 +141,21 @@ function getHumidityGradient(){
 }
 
 function getAirGradient(){
-
+    let gradient = [
+        'rgba(237,237,237, 0)',
+        'rgba(219,219,219, 1)',
+        'rgba(201,201,201, 1)',
+        'rgba(183,183,183, 1)',
+        'rgba(165,165,165, 1)',
+        'rgba(146,146,146, 1)',
+        'rgba(128,128,128, 1)',
+        'rgba(110,110,110, 1)',
+        'rgba(92,92,92, 1)',
+        'rgba(74,74,74, 1)',
+        'rgba(56,56,56, 1)',
+        'rgba(38,38,38, 1)'
+    ];
+    return gradient;
 }
 
 function getWasteGradient(){
