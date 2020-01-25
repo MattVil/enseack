@@ -65,7 +65,7 @@ function refresh(){
 
 function getData(capteur, periode){
     let timestamp = new Date().getTime();
-    let url = "http://127.0.0.1:5000/get?timestamp=" + timestamp + "&delta=" + 0 + "&type=" + capteur;
+    let url = "http://enseack-rest-sql.herokuapp.com/get?timestamp=" + timestamp + "&delta=" + 0 + "&type=" + capteur;
     console.log(url)
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", url, false);
