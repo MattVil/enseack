@@ -70,7 +70,7 @@ function refresh(){
 
 function getData(){
     let xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", "https://enseack-rest-sql.herokuapp.com/all/", false );
+    xmlHttp.open( "GET", "https://enseack-rest-sql.herokuapp.com/all", false);
     xmlHttp.send();
     console.log(xmlHttp.responseText);
 }
