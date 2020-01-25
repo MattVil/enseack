@@ -43,7 +43,21 @@ class MyApp(Resource):
 
 class Find_specific(Resource):
     def get(self, timestamp, delta, type):
-        pass
+        if(type == 'temperature'):
+            return {'data' : list(map(lambda x: x.json_temperature(), Data.query.all()))}
+        elif(type == 'humidity'):
+            return {'data' : list(map(lambda x: x.json_humidity(), Data.query.all()))}
+        elif(type == 'son'):
+            return {'data' : list(map(lambda x: x.json_sound(), Data.query.all()))}
+        elif(type == 'air'):
+            return {'data' : list(map(lambda x: x.json_co(), Data.query.all()),
+                           map(lambda x: x.json_co2(), Data.query.all()),
+                           map(lambda x: x.json_gpl(), Data.query.all()))}
+        elif(type == 'waste'):
+            return {'data' : list(map(lambda x: x.json_waste(), Data.query.all()))}
+        else:
+            return list()
+
 
 class Find_all(Resource):
     def get(self):
@@ -60,6 +74,7 @@ class Root(Resource):
 
 api.add_resource(Root, '/')
 api.add_resource(Find_all, '/all')
+api.add_resource(Find_specific, '/get')
 api.add_resource(MyApp, '/data')
 
 if __name__=='__main__':
