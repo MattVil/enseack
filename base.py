@@ -38,6 +38,46 @@ class Data(db.Model):
                 'gpl': self.gpl,
                 'waste': self.waste}
 
+    def json_temperature(self):
+        return {'latitude': self.latitude,
+                'longitude': self.longitude,
+                'value': self.temperature}
+
+    def json_humidity(self):
+        return {'latitude': self.latitude,
+                'longitude': self.longitude,
+                'value': self.humidity}
+
+    def json_sound(self):
+        return {'latitude': self.latitude,
+                'longitude': self.longitude,
+                'value': self.sound}
+
+    def json_co(self):
+        return {'latitude': self.latitude,
+                'longitude': self.longitude,
+                'value': self.co}
+
+    def json_co2(self):
+        return {'latitude': self.latitude,
+                'longitude': self.longitude,
+                'value': self.co2}
+
+    def json_gpl(self):
+        return {'latitude': self.latitude,
+                'longitude': self.longitude,
+                'value': self.gpl}
+
+    def json_waste(self):
+        return {'latitude': self.latitude,
+                'longitude': self.longitude,
+                'value': self.waste}
+
+
+
+
+
+
     @classmethod
     def find_by_timestamp(cls, timestamp):
         pass
