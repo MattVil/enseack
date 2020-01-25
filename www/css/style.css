@@ -1,0 +1,43 @@
+#map{
+    top: 0;
+    left:0;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: -1;
+}
+
+#brand-name{
+    font-size: 2em;
+    color: white;
+}
+
+#header{
+    height: 0;
+}
+
+#menu{
+    height: 0;
+}
+
+.icon-option{
+    width: 1.5em;
+}
+
+.label-option{
+    color: #2cc55a;
+    border-radius: 10em !important;
+}
+
+.label-option.active{
+    background-color: cornsilk;
+}
+
+#brand-name{
+    color: black;
+    text-shadow: 0px 0px 10px ghostwhite;
+}
+
+/* #menu{
+    background-color: violet;
+} */
