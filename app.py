@@ -27,9 +27,11 @@ class MyApp(Resource):
 
     def post(self):
         args = MyApp.parser.parse_args()
-        print(args)
+        print("args : {}\ttype : {}".format(args, type(args)))
+        print("args['data'] : {}\ttype : {}".format(args['data'], type(args['data'])))
         print("#"*80)
         json_data = json.loads(args['data'])
+        print("json : {}\ttype : {}".format(json_data, type(json_data)))
         item = Data(json_data['timestamp'],
                     json_data['longitude'],
                     json_data['latitude'],
