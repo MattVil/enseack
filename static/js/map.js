@@ -6,8 +6,8 @@ function initMap() {
 
     map = new google.maps.Map(
         document.getElementById('map'), {
-            zoom: 15, 
-            center: ensea, 
+            zoom: 15,
+            center: ensea,
             disableDefaultUI: true,
             mapTypeId: 'roadmap',
             mapTypeControl: true,
@@ -26,7 +26,7 @@ function initMap() {
     heatmap = new google.maps.visualization.HeatmapLayer();
     heatmap.setData(getTemperatureData());
     displayHeatmap(heatmap);
-      
+
 }
 
 function displayHeatmap(heatmap){
