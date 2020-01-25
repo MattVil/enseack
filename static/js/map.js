@@ -51,10 +51,11 @@ function refresh(){
             var dot = {};
             dot['location'] = new google.maps.LatLng(parseFloat(line['latitude']), parseFloat(line['longitude']));
             dot['weight'] = line['value'];
-            console.log(dot['location'].toString())
+            console.log(dot['location'].toString());
             data.push(dot);
         }
     }
+    //data = getTemperatureData();
     console.log(data);
 
     heatmap.setData(data);
@@ -99,21 +100,23 @@ function getGradient(capteur){
 //TODO: Recuperer données temperature
 function getTemperatureData(){
     heatmapData = [
-        new google.maps.LatLng(49.0393, 2.0714),
-        new google.maps.LatLng(49.0392, 2.0710),
-        new google.maps.LatLng(49.0392, 2.0717),
-        new google.maps.LatLng(49.0394, 2.0713),
-        new google.maps.LatLng(49.0399, 2.0713),
-        new google.maps.LatLng(49.0395, 2.0714),
-        new google.maps.LatLng(49.0394, 2.0712),
-        new google.maps.LatLng(49.0394, 2.0711),
-        new google.maps.LatLng(49.0390, 2.0715),
-        new google.maps.LatLng(49.0397, 2.0719),
-        new google.maps.LatLng(49.0396, 2.0718),
-        new google.maps.LatLng(49.0390, 2.0710),
-        new google.maps.LatLng(49.0392, 2.0711),
-        new google.maps.LatLng(49.0391, 2.0714),
-    ];
+        {location: new google.maps.LatLng(37.782, -122.447), weight: 0.5},
+        new google.maps.LatLng(37.782, -122.445),
+        {location: new google.maps.LatLng(37.782, -122.443), weight: 2},
+        {location: new google.maps.LatLng(37.782, -122.441), weight: 3},
+        {location: new google.maps.LatLng(37.782, -122.439), weight: 2},
+        new google.maps.LatLng(37.782, -122.437),
+        {location: new google.maps.LatLng(37.782, -122.435), weight: 0.5},
+      
+        {location: new google.maps.LatLng(37.785, -122.447), weight: 3},
+        {location: new google.maps.LatLng(37.785, -122.445), weight: 2},
+        new google.maps.LatLng(37.785, -122.443),
+        {location: new google.maps.LatLng(37.785, -122.441), weight: 0.5},
+        new google.maps.LatLng(37.785, -122.439),
+        {location: new google.maps.LatLng(37.785, -122.437), weight: 2},
+        {location: new google.maps.LatLng(37.785, -122.435), weight: 3}
+      ];
+      
 
     return heatmapData
 }
