@@ -1,5 +1,5 @@
 var map, heatmap;
-var tempHeatmap, noiseHeatmap, humidityHeatmap, wasteHeatmap;
+var airHeatmapData = [], airHeatmap = [];
 
 function initMap() {
     let ensea = {lat: 49.039319, lng: 2.071970};
@@ -17,10 +17,17 @@ function initMap() {
           },
     });
 
-    tempHeatmap = new google.maps.visualization.HeatmapLayer();
-    noiseHeatmap = new google.maps.visualization.HeatmapLayer();
-    humidityHeatmap = new google.maps.visualization.HeatmapLayer();
-    wasteHeatmap = new google.maps.visualization.HeatmapLayer();
+    airHeatmapData[0] = new google.maps.visualization.HeatmapLayer();
+    airHeatmapData[1] = new google.maps.visualization.HeatmapLayer();
+    airHeatmapData[2] = new google.maps.visualization.HeatmapLayer();
+
+    airHeatmap[0] = new google.maps.visualization.HeatmapLayer();
+    airHeatmap[1] = new google.maps.visualization.HeatmapLayer();
+    airHeatmap[2] = new google.maps.visualization.HeatmapLayer();
+
+    airHeatmap[0].set('gradient', getTemperatureGradient());
+    airHeatmap[1].set('gradient', getHumidityGradient());
+    airHeatmap[2].set('gradient', getWasteGradient());
 
     //HeatMap test
     heatmap = new google.maps.visualization.HeatmapLayer();
@@ -35,32 +42,52 @@ function displayHeatmap(heatmap){
 
 function refresh(){
     let rawdata, data = [], gradient;
+    let dot = {}, line;
     let selectedValue = $('input[name="options"]:checked').val();
     let periode = $('#periode-selector option:selected').val();
     console.log(selectedValue);
     rawdata = getData(selectedValue, periode);
     gradient = getGradient(selectedValue);
 
-    if (selectedValue === "air"){
+    json = JSON.parse(rawdata);
+    console.log(json);
 
+    if (selectedValue === "air"){
+        heatmap.setMap(heatmap.getMap() ? null : map);
+        for (i in json){
+            data = [];
+            var list = json[i];
+            for (key in list){
+                line = list[key];
+                dot = {};
+                dot['location'] = new google.maps.LatLng(parseFloat(line['latitude']), parseFloat(line['longitude']));
+                dot['weight'] = line['value'];
+                data.push(dot);
+            }
+            airHeatmapData[i] = data;
+            airHeatmap[i].setData(airHeatmapData[i]);
+            airHeatmap[i].setMap(map);
+        }
+        console.log(airHeatmapData);
     }else{
-        json = JSON.parse(rawdata);
-        console.log(json);
+        for (i in airHeatmap.length){
+            airHeatmap[i].setMap(airHeatmap[i].getMap() ? null : map);
+        }
         for (var key in json){
+            dot = {};
             line = json[key];
-            var dot = {};
             dot['location'] = new google.maps.LatLng(parseFloat(line['latitude']), parseFloat(line['longitude']));
             dot['weight'] = line['value'];
             console.log(dot['location'].toString());
             data.push(dot);
         }
-    }
-    //data = getTemperatureData();
-    console.log(data);
+        //data = getTemperatureData();
+        console.log(data);
 
-    heatmap.setData(data);
-    heatmap.set('gradient', gradient);
-    heatmap.setMap(map);
+        heatmap.setData(data);
+        heatmap.set('gradient', gradient);
+        heatmap.setMap(map);
+    }
 }
 
 function getData(capteur, periode){
