@@ -1,12 +1,9 @@
 from flask import Flask
 from flask_restful import Resource, reqparse, Api
 import json
-from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-cors = CORS(app)
 api = Api(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///base.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
