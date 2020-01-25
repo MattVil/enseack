@@ -54,6 +54,8 @@ function refresh(){
         }
     }
 
+    console.log(data);
+
     //data = getTemperatureData();
     heatmap.setData(data);
     heatmap.set('gradient', gradient);
@@ -62,8 +64,10 @@ function refresh(){
 
 function getData(capteur, periode){
     let timestamp = new Date().getTime();
+    let url = "http://127.0.0.1:5000/get?timestamp=" + timestamp + "&delta=" + 0 + "&type=" + capteur;
+    console.log(url)
     let xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", "http://127.0.0.1:5000/all", false);
+    xmlHttp.open( "GET", url, false);
     xmlHttp.send();
     console.log(xmlHttp.responseText);
 

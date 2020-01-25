@@ -1,5 +1,7 @@
 from flask import render_template, make_response, Flask
 from flask_restful import Resource, reqparse, Api
+from webargs import fields, validate
+from webargs.flaskparser import use_kwargs, parser
 import json
 
 app = Flask(__name__, static_url_path="/static")
@@ -42,7 +44,15 @@ class MyApp(Resource):
         return item.json()
 
 class Find_specific(Resource):
-    def get(self, timestamp, delta, type):
+    args = {
+        'type': fields.Str(
+            required=True,
+            validate=validate.OneOf(['temperature', 'air', 'waste', 'son', 'humidity']),
+        ),
+    }
+
+    @use_kwargs(args)
+    def get(self, type):
         if(type == 'temperature'):
             return {'data' : list(map(lambda x: x.json_temperature(), Data.query.all()))}
         elif(type == 'humidity'):
@@ -50,9 +60,10 @@ class Find_specific(Resource):
         elif(type == 'son'):
             return {'data' : list(map(lambda x: x.json_sound(), Data.query.all()))}
         elif(type == 'air'):
-            return {'data' : list(map(lambda x: x.json_co(), Data.query.all()),
-                           map(lambda x: x.json_co2(), Data.query.all()),
-                           map(lambda x: x.json_gpl(), Data.query.all()))}
+            co = list(map(lambda x: x.json_co(), Data.query.all()))
+            co2 = list(map(lambda x: x.json_co2(), Data.query.all()))
+            gpl = list(map(lambda x: x.json_gpl(), Data.query.all()))
+            return {'data' : [co, co2, gpl]}
         elif(type == 'waste'):
             return {'data' : list(map(lambda x: x.json_waste(), Data.query.all()))}
         else:
@@ -74,7 +85,7 @@ class Root(Resource):
 
 api.add_resource(Root, '/')
 api.add_resource(Find_all, '/all')
-api.add_resource(Find_specific, '/get')
+api.add_resource(Find_specific, '/get', endpoint='get')
 api.add_resource(MyApp, '/data')
 
 if __name__=='__main__':
