@@ -46,17 +46,17 @@ function refresh(){
     }else{
         json = JSON.parse(rawdata);
         console.log(json);
-        for (var line in json){
+        for (var key in json){
+            line = json[key];
             var dot = {};
-            dot['location'] = new google.maps.LatLng(line['lattitude'], line['longitude']);
+            dot['location'] = new google.maps.LatLng(parseFloat(line['latitude']), parseFloat(line['longitude']));
             dot['weight'] = line['value'];
+            console.log(dot['location'].toString())
             data.push(dot);
         }
     }
-
     console.log(data);
 
-    //data = getTemperatureData();
     heatmap.setData(data);
     heatmap.set('gradient', gradient);
     heatmap.setMap(map);

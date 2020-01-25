@@ -54,18 +54,18 @@ class Find_specific(Resource):
     @use_kwargs(args)
     def get(self, type):
         if(type == 'temperature'):
-            return {'data' : list(map(lambda x: x.json_temperature(), Data.query.all()))}
+            return list(map(lambda x: x.json_temperature(), Data.query.all()))
         elif(type == 'humidity'):
-            return {'data' : list(map(lambda x: x.json_humidity(), Data.query.all()))}
+            return list(map(lambda x: x.json_humidity(), Data.query.all()))
         elif(type == 'son'):
-            return {'data' : list(map(lambda x: x.json_sound(), Data.query.all()))}
+            return list(map(lambda x: x.json_sound(), Data.query.all()))
         elif(type == 'air'):
             co = list(map(lambda x: x.json_co(), Data.query.all()))
             co2 = list(map(lambda x: x.json_co2(), Data.query.all()))
             gpl = list(map(lambda x: x.json_gpl(), Data.query.all()))
-            return {'data' : [co, co2, gpl]}
+            return [co, co2, gpl]
         elif(type == 'waste'):
-            return {'data' : list(map(lambda x: x.json_waste(), Data.query.all()))}
+            return list(map(lambda x: x.json_waste(), Data.query.all()))
         else:
             return list()
 
