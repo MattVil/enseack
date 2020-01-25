@@ -1,8 +1,8 @@
-from flask import render_template, Flask
+from flask import render_template, make_response, Flask
 from flask_restful import Resource, reqparse, Api
 import json
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="/static")
 api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///base.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -51,7 +51,12 @@ class Find_all(Resource):
 
 class Root(Resource):
     def get(self):
-        return render_template('/index.html')
+        response = make_response(render_template('/index.html'))
+        response.headers["Content-Type"]='text/html'
+        # return render_template('/index.html')
+        return response
+
+
 
 api.add_resource(Root, '/')
 api.add_resource(Find_all, '/all')
