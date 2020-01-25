@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import render_template, Flask
 from flask_restful import Resource, reqparse, Api
 import json
 
@@ -41,15 +41,17 @@ class MyApp(Resource):
         item.save_to()
         return item.json()
 
+class Find_specific(Resource):
+    def get(self, timestamp, delta, type):
+        pass
+
 class Find_all(Resource):
     def get(self):
         return {'data' : list(map(lambda x: x.json(), Data.query.all()))}
 
 class Root(Resource):
     def get(self):
-        return {
-            'status': 'OK',
-        }
+        return render_template('www/index.html')
 
 api.add_resource(Root, '/')
 api.add_resource(Find_all, '/all')
