@@ -51,7 +51,7 @@ class Find_all(Resource):
 
 class Root(Resource):
     def get(self):
-        return render_template('www/index.html')
+        return render_template('/index.html')
 
 api.add_resource(Root, '/')
 api.add_resource(Find_all, '/all')
